@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/Haircut_image">
+    android:background="@drawable/haircut">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editTextTextEmailAddressSignIn"
+            android:id="@+id/editTextEmailSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -25,7 +25,7 @@
             android:textStyle="italic" />
 
         <EditText
-            android:id="@+id/editTextTextPasswordSignIn"
+            android:id="@+id/editTextPasswordSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -46,5 +46,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
-        android:text="Confirm" />
+        android:text="Sign In" />
 </FrameLayout>
