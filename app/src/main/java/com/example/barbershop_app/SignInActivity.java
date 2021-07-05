@@ -3,6 +3,7 @@ package com.example.barbershop_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {
 
-    Button confirmSignInButton;
     private FirebaseAuth mAuth;
+    Button confirmSignInButton;
     EditText signInEmailText;
     EditText signInPasswordText;
 
@@ -56,6 +57,8 @@ public class SignInActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(SignInActivity.this,"Successful",Toast.LENGTH_LONG).show();
+                                    Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
+                                    startActivity(mainMenuIntent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(SignInActivity.this,"Failed",Toast.LENGTH_LONG).show();

@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="goToBookAppointment"
             android:padding="20dp"
             android:text="Book Appiontment" />
 
@@ -34,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="goToCancelAppointment"
             android:padding="20dp"
             android:text="Cancel Appointment" />
 
@@ -43,8 +41,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="goToRescheduleAppointment"
             android:padding="20dp"
             android:text="Reschedule Appointment" />
+
+        <Button
+            android:id="@+id/buttonLogOutMainMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="20dp"
+            android:text="Log out" />
     </LinearLayout>
 </FrameLayout>
