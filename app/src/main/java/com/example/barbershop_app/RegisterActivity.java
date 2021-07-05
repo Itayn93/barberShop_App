@@ -18,14 +18,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     Button registerButton;
+    EditText registerFullName;
+    EditText registerID;
     EditText registerEmailText;
     EditText registerPasswordText;
     EditText registerConfirmPassword;
+     int dbUserID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +39,20 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
+        mDatabase = FirebaseDatabase.getInstance().getReference();// enable read/write to DB
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         registerButton = findViewById(R.id.buttonConfirmRegister);
+        registerFullName = findViewById(R.id.editTextFullName);
+        registerID = findViewById(R.id.editTextID);
         registerEmailText = findViewById(R.id.editTextEmailRegister);
         registerPasswordText = findViewById(R.id.editTextPasswordRegister);
         registerConfirmPassword = findViewById(R.id.editTextConfirmPassword);
+
+
     }
 
     @Override
@@ -51,7 +62,8 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String fullName = registerFullName.getText().toString();
+                String id = registerID.getText().toString();
                 String email = registerEmailText.getText().toString();
                 String password = registerPasswordText.getText().toString();
                 String confirmPassword = registerConfirmPassword.getText().toString();
@@ -66,6 +78,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Toast.makeText(RegisterActivity.this, "Successful", Toast.LENGTH_LONG).show();
+                                        dbUserID++;
+                                        writeNewUser(String.valueOf(dbUserID),fullName,id,email,password);
+
                                         Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
                                         startActivity(mainMenuIntent);
 
@@ -99,5 +114,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void writeNewUser(String userId, String fullName,String id, String email,String password) {
+        User user = new User(fullName,id,email,password);
+
+        mDatabase.child("users").child(userId).setValue(user);
     }
 }
