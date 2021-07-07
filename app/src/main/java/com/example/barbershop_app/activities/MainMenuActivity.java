@@ -1,4 +1,4 @@
-package com.example.barbershop_app;
+package com.example.barbershop_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.barbershop_app.MainActivity;
+import com.example.barbershop_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -44,7 +46,8 @@ public class MainMenuActivity extends AppCompatActivity {
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent goToSchedulerActivity = new Intent(getApplicationContext(), SchedulerActivity.class);// go to Main Menu
+                startActivity(goToSchedulerActivity);
             }
         });
 

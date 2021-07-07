@@ -1,4 +1,4 @@
-package com.example.barbershop_app;
+package com.example.barbershop_app.classes;
 
 public class User {
 

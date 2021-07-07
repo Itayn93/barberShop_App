@@ -1,4 +1,4 @@
-package com.example.barbershop_app;
+package com.example.barbershop_app.activities;
 
 
 import androidx.annotation.NonNull;
@@ -6,18 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.barbershop_app.R;
+import com.example.barbershop_app.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText registerEmailText;
     EditText registerPasswordText;
     EditText registerConfirmPassword;
-     int dbUserID = 0;
+    // int dbUserID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Toast.makeText(RegisterActivity.this, "Successful", Toast.LENGTH_LONG).show();
-                                        dbUserID++;
-                                        writeNewUser(String.valueOf(dbUserID),fullName,id,email,password);
+                                        //dbUserID++;
+                                        writeNewUser(id,fullName,id,email,password);
 
                                         Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
                                         startActivity(mainMenuIntent);
