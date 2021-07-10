@@ -14,7 +14,7 @@
         android:theme="@style/Theme.BarberShop_App">
         <activity android:name=".activities.SchedulerActivity"></activity>
         <activity android:name=".activities.MainMenuActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

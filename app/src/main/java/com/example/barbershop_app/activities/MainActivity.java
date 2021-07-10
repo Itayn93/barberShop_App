@@ -1,4 +1,4 @@
-package com.example.barbershop_app;
+package com.example.barbershop_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.barbershop_app.R;
 import com.example.barbershop_app.activities.RegisterActivity;
 import com.example.barbershop_app.activities.SignInActivity;
 import com.google.firebase.FirebaseApp;

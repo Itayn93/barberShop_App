@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Toast.makeText(RegisterActivity.this, "Successful", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(RegisterActivity.this, "Signed in Successfully", Toast.LENGTH_LONG).show();
                                         //dbUserID++;
                                         writeNewUser(id,fullName,id,email,password);
 
@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(RegisterActivity.this, "Sign in Failed", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });

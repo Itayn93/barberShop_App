@@ -6,12 +6,13 @@ public class Appointment {
     private int month;
     private int dayOfMonth;
     private int hour;
+    private int minute;
 
     public Appointment(){
 
     }
 
-    public Appointment(int year , int month , int dayOfMonth , int hour){
+    public Appointment(int year , int month , int dayOfMonth , int hour, int minute){
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
@@ -50,4 +51,11 @@ public class Appointment {
         this.hour = hour;
     }
 
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
 }
