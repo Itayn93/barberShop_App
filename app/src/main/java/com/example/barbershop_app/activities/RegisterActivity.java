@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.barbershop_app.R;
+import com.example.barbershop_app.classes.Appointment;
 import com.example.barbershop_app.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = registerPasswordText.getText().toString();
                 String confirmPassword = registerConfirmPassword.getText().toString();
 
+
                 if (confirmPassword.equals(password)) {
 
                     // creating new User in firebase
@@ -76,12 +78,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Toast.makeText(RegisterActivity.this, "Signed in Successfully", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_LONG).show();
                                         //dbUserID++;
                                         writeNewUser(id,fullName,id,email,password);
 
-                                        Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
-                                        startActivity(mainMenuIntent);
+                                        Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);// go to Main Menu
+                                        startActivity(signInIntent);
 
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -120,4 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         mDatabase.child("users").child(userId).setValue(user);
     }
+
+
 }

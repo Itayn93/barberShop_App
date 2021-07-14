@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d("Lifecycle: ", "LoggedInActivity onResume");
+        Log.d("Lifecycle: ", "LoggedInActivity onDestroy");
         super.onDestroy();
     }
 

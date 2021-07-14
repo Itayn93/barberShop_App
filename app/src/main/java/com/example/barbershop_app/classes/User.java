@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String password;
 
+
     public User(){
 
     }
@@ -17,6 +18,7 @@ public class User {
         this.id = id;
         this.email = email;
         this.password = password;
+
     }
 
     public String getFullName() {
@@ -51,3 +53,4 @@ public class User {
         this.password = password;
     }
 }
+

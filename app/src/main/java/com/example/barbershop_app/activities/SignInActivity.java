@@ -3,50 +3,75 @@ package com.example.barbershop_app.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.barbershop_app.classes.JsonIO;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.barbershop_app.R;
+import com.example.barbershop_app.classes.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference dbUsers;
     Button confirmSignInButton;
     EditText signInEmailText;
     EditText signInPasswordText;
-
+    User signedInUser = new User();
+    //User user = new User();
+    String userObj;
+    int signInSuccessful = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Lifecycle: ", "LoggedInActivity onCreate SignInActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         mAuth = FirebaseAuth.getInstance();
+        dbUsers = FirebaseDatabase.getInstance().getReference("users");
+        //dbUsers.addListenerForSingleValueEvent(valueEventListener);
+
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
+        Log.d("Lifecycle: ", "LoggedInActivity onStart SignInActivity");
         confirmSignInButton = findViewById(R.id.buttonCofirmSignIn);
         signInEmailText = findViewById(R.id.editTextEmailSignIn);
         signInPasswordText = findViewById(R.id.editTextPasswordSignIn);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("Lifecycle: ", "LoggedInActivity onResume SignInActivity");
 
         confirmSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Lifecycle: ", "LoggedInActivity onClick SignInActivity");
 
                 String email = signInEmailText.getText().toString();
                 String password = signInPasswordText.getText().toString();
@@ -57,15 +82,96 @@ public class SignInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(SignInActivity.this,"Successful",Toast.LENGTH_LONG).show();
-                                    Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
-                                    startActivity(mainMenuIntent);
+                                    Toast.makeText(SignInActivity.this,"Sign In Successful",Toast.LENGTH_LONG).show();
+                                    Log.d("Lifecycle: ", "LoggedInActivity onComplete SignInActivity");
+                                    signInSuccessful = 1;
+                                    //System.out.println("onComplete");
+                                   /*dbUsers.addValueEventListener(new ValueEventListener() {
+
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            //User signedInUser = new User();
+                                            Log.d("Lifecycle: ", "LoggedInActivity onDataChange SignInActivity");
+                                            for (DataSnapshot dsp : snapshot.getChildren()) {
+                                                signedInUser = dsp.getValue(User.class);
+
+                                                if (signedInUser.getEmail().equals(email))
+
+                                                    break;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.d("Lifecycle: ", "LoggedInActivity onCancelled SignInActivity");
+                                        }
+                                    });*/
+
+                                    //getSignedInUser();
+                                    //System.out.println(user.getFullName());
+                                    //Log.d("Lifecycle: ", "LoggedInActivity AFTER addValueEventListener SignInActivity");
+                                        /*Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
+                                        try {
+                                            Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
+                                            userObj = JsonIO.Object_to_JsonString(signedInUser);
+                                        } catch (JsonProcessingException e) {
+                                            Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
+                                            e.printStackTrace();
+                                        }
+                                        mainMenuIntent.putExtra("userObj", userObj);
+                                    Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
+                                        startActivity(mainMenuIntent);
+                                    Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
+*/
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(SignInActivity.this,"Failed",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignInActivity.this,"No Such User In DB",Toast.LENGTH_LONG).show();
                                 }
+
+                                if (signInSuccessful == 1){ //// get current signed in user and put extra to main menu activity using JsonIO class
+                                    dbUsers.addValueEventListener(new ValueEventListener() {
+
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            //User signedInUser = new User();
+                                            Log.d("Lifecycle: ", "LoggedInActivity onDataChange SignInActivity");
+                                            for (DataSnapshot dsp : snapshot.getChildren()) {
+                                                signedInUser = dsp.getValue(User.class);
+
+                                                if (signedInUser.getEmail().equals(email))
+
+                                                    break;
+                                            }
+                                            Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
+                                            try {
+                                                Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
+                                                userObj = JsonIO.Object_to_JsonString(signedInUser);
+                                            } catch (JsonProcessingException e) {
+                                                Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
+                                                e.printStackTrace();
+                                            }
+                                            mainMenuIntent.putExtra("userObj", userObj);
+                                            Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
+                                            startActivity(mainMenuIntent);
+                                            Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.d("Lifecycle: ", "LoggedInActivity onCancelled SignInActivity");
+                                        }
+                                    });
+
+                                }
+
+
+
                             }
+
+
                         });
+
+
 
             }
         });
@@ -74,29 +180,29 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("Lifecycle: ", "LoggedInActivity onPause");
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("Lifecycle: ", "LoggedInActivity onStop");
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("Lifecycle: ", "LoggedInActivity onDestroy");
+
     }
+
+
+/*    public User getSignedInUser() {
+
+
+    }*/
 }
 
 
-//public int validateInput(String email, String password) {
-//        String emailRegex = "^[a-zA-Z0-9+&*-]+(?:\." +
-//                "[a-zA-Z0-9+&-]+)@" +
-//                "(?:[a-zA-Z0-9-]+\.)+[a-z" +
-//                "A-Z]{2,7}$";
-//        Pattern pat = Pattern.compile(emailRegex);
-//        if (email.isEmpty() || password.isEmpty()) { //email empty or password
-//            return 0;
-//        } else if (pat.matcher(email).matches()) { //email ok
-//            return 1;
-//        }
-//        return 2;

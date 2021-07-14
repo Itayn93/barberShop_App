@@ -17,6 +17,7 @@ public class MainMenuActivity extends AppCompatActivity {
     Button cancelAppointmentButton;
     Button rescheduleAppointmentButton;
     Button logOutButton;
+    String userObj;
 
 
 
@@ -35,6 +36,7 @@ public class MainMenuActivity extends AppCompatActivity {
         cancelAppointmentButton = findViewById(R.id.buttonCancelAppointment);
         rescheduleAppointmentButton = findViewById(R.id.buttonRescheduleAppointment);
         logOutButton = findViewById(R.id.buttonLogOutMainMenu);
+        userObj = getIntent().getStringExtra("userObj");
 
     }
 
@@ -45,7 +47,8 @@ public class MainMenuActivity extends AppCompatActivity {
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToSchedulerActivity = new Intent(getApplicationContext(), SchedulerActivity.class);// go to Main Menu
+                Intent goToSchedulerActivity = new Intent(getApplicationContext(), SchedulerActivity.class);
+                goToSchedulerActivity.putExtra("userObj", userObj);
                 startActivity(goToSchedulerActivity);
             }
         });

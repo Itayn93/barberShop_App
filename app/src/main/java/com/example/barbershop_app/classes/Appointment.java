@@ -5,14 +5,17 @@ public class Appointment {
     private int year;
     private int month;
     private int dayOfMonth;
-    private int hour;
-    private int minute;
+    private String hour;
+
 
     public Appointment(){
-
+        //this.year = 0;
+        //this.month = 0;
+        //this.dayOfMonth = 0;
+        //this.hour = "0";
     }
 
-    public Appointment(int year , int month , int dayOfMonth , int hour, int minute){
+    public Appointment(int year , int month , int dayOfMonth , String hour){
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
@@ -43,19 +46,13 @@ public class Appointment {
         this.dayOfMonth = dayOfMonth;
     }
 
-    public int getHour() {
+    public String getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(String hour) {
         this.hour = hour;
     }
 
-    public int getMinute() {
-        return minute;
-    }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
 }
