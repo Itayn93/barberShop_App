@@ -20,12 +20,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
@@ -42,7 +40,7 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Lifecycle: ", "LoggedInActivity onCreate SignInActivity");
+       // Log.d("Lifecycle: ", "LoggedInActivity onCreate SignInActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         mAuth = FirebaseAuth.getInstance();
@@ -56,7 +54,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("Lifecycle: ", "LoggedInActivity onStart SignInActivity");
+      //  Log.d("Lifecycle: ", "LoggedInActivity onStart SignInActivity");
         confirmSignInButton = findViewById(R.id.buttonCofirmSignIn);
         signInEmailText = findViewById(R.id.editTextEmailSignIn);
         signInPasswordText = findViewById(R.id.editTextPasswordSignIn);
@@ -66,12 +64,12 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Lifecycle: ", "LoggedInActivity onResume SignInActivity");
+       // Log.d("Lifecycle: ", "LoggedInActivity onResume SignInActivity");
 
         confirmSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Lifecycle: ", "LoggedInActivity onClick SignInActivity");
+                //Log.d("Lifecycle: ", "LoggedInActivity onClick SignInActivity");
 
                 String email = signInEmailText.getText().toString();
                 String password = signInPasswordText.getText().toString();
@@ -83,46 +81,9 @@ public class SignInActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(SignInActivity.this,"Sign In Successful",Toast.LENGTH_LONG).show();
-                                    Log.d("Lifecycle: ", "LoggedInActivity onComplete SignInActivity");
+                                    //Log.d("Lifecycle: ", "LoggedInActivity onComplete SignInActivity");
                                     signInSuccessful = 1;
-                                    //System.out.println("onComplete");
-                                   /*dbUsers.addValueEventListener(new ValueEventListener() {
 
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            //User signedInUser = new User();
-                                            Log.d("Lifecycle: ", "LoggedInActivity onDataChange SignInActivity");
-                                            for (DataSnapshot dsp : snapshot.getChildren()) {
-                                                signedInUser = dsp.getValue(User.class);
-
-                                                if (signedInUser.getEmail().equals(email))
-
-                                                    break;
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Log.d("Lifecycle: ", "LoggedInActivity onCancelled SignInActivity");
-                                        }
-                                    });*/
-
-                                    //getSignedInUser();
-                                    //System.out.println(user.getFullName());
-                                    //Log.d("Lifecycle: ", "LoggedInActivity AFTER addValueEventListener SignInActivity");
-                                        /*Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
-                                        try {
-                                            Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
-                                            userObj = JsonIO.Object_to_JsonString(signedInUser);
-                                        } catch (JsonProcessingException e) {
-                                            Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
-                                            e.printStackTrace();
-                                        }
-                                        mainMenuIntent.putExtra("userObj", userObj);
-                                    Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
-                                        startActivity(mainMenuIntent);
-                                    Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
-*/
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(SignInActivity.this,"No Such User In DB",Toast.LENGTH_LONG).show();
@@ -134,44 +95,37 @@ public class SignInActivity extends AppCompatActivity {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             //User signedInUser = new User();
-                                            Log.d("Lifecycle: ", "LoggedInActivity onDataChange SignInActivity");
+                                            //Log.d("Lifecycle: ", "LoggedInActivity onDataChange SignInActivity");
                                             for (DataSnapshot dsp : snapshot.getChildren()) {
                                                 signedInUser = dsp.getValue(User.class);
-
                                                 if (signedInUser.getEmail().equals(email))
-
                                                     break;
                                             }
-                                            Intent mainMenuIntent = new Intent(getApplicationContext(), MainMenuActivity.class);// go to Main Menu
+                                            Intent mainMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to Main Menu
                                             try {
-                                                Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
+                                               // Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
                                                 userObj = JsonIO.Object_to_JsonString(signedInUser);
                                             } catch (JsonProcessingException e) {
-                                                Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
+                                                //Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
                                                 e.printStackTrace();
                                             }
                                             mainMenuIntent.putExtra("userObj", userObj);
-                                            Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
+                                            //Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
                                             startActivity(mainMenuIntent);
-                                            Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
+                                            //Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-                                            Log.d("Lifecycle: ", "LoggedInActivity onCancelled SignInActivity");
+                                           // Log.d("Lifecycle: ", "LoggedInActivity onCancelled SignInActivity");
                                         }
                                     });
 
                                 }
 
-
-
                             }
 
-
                         });
-
-
 
             }
         });
@@ -198,11 +152,6 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-
-/*    public User getSignedInUser() {
-
-
-    }*/
 }
 
 
