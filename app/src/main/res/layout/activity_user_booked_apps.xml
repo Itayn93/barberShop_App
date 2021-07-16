@@ -57,12 +57,6 @@
                 android:layout_margin="10dp"
                 android:padding="15dp" />
 
-            <TextView
-                android:id="@+id/info_textEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="15dp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

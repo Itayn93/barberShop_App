@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SchedulerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -36,11 +39,12 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                        "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
                        "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"};
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference dbUsers;
+    //private FirebaseAuth mAuth;
+    private DatabaseReference dbAppointments;
     CalendarView calendarView;
     Button bookButton;
     Appointment appointment = new Appointment();
+    Appointment checkDBAppointment = new Appointment();
     Spinner hourPicker;
     User signedInUser = new User();
     String userObj;
@@ -51,8 +55,8 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduler);
 
-        mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
-        dbUsers = FirebaseDatabase.getInstance().getReference();// enable read/write to DB
+        //mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
+        dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");// enable read/write to DB
 
 
 
@@ -100,14 +104,63 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //int appointmentAvailable = readAppointmentFromDB(signedInUser.getId());
+                //if (appointmentAvailable == 1){
+                // check if appointment not booked already !
+                Log.d("Lifecycle: ", "LoggedInActivity onClick SchedulerActivity");
+                dbAppointments.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //int appAvailable = 1;
+                        Log.d("Lifecycle: ", "LoggedInActivity onDataChange SchedulerActivity");
+                        for (DataSnapshot dsp : snapshot.getChildren()) { //enhanced loop
+                            checkDBAppointment = dsp.getValue(Appointment.class);
+                            String uid = dsp.getKey();
+                            if (!uid.equals(signedInUser.getId())) {
+                                if (checkDBAppointment.getDayOfMonth() == appointment.getDayOfMonth() && checkDBAppointment.getHour().equals(appointment.getHour())  &&
+                                        checkDBAppointment.getMonth() == appointment.getMonth() && checkDBAppointment.getYear() == appointment.getYear()) {
+                                    //Log.d("Lifecycle: ", "LoggedInActivity onDataChange IF SchedulerActivity");
+                                    Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
+                                    break;
+                                }
+                                else { // if appointment is available
+                                    //Log.d("Lifecycle: ", "LoggedInActivity onDataChange ELSE SchedulerActivity");
+                                    writeNewAppointment(signedInUser.getId(),appointment);
+
+                                    Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
+
+                                    Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
+                                    userBookedAppsIntent.putExtra("userObj", userObj);
+                                    startActivity(userBookedAppsIntent);
+
+                                }
 
 
-                writeNewAppointment(signedInUser.getId(),appointment);
-                // if date is available (get data from appointment db)
-                Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
-                // else
-                //Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
-            }
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                 /*   writeNewAppointment(signedInUser.getId(),appointment);
+                    // if date is available (get data from appointment db)
+                    Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
+
+                    Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
+                    startActivity(userBookedAppsIntent);*/
+
+                }
+
+                 //else {
+                    //Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
+                //}
+            //}
         });
     }
 
@@ -128,29 +181,44 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
 
     public void writeNewAppointment(String userId, Appointment appointment) {
-        //Appointment appointment = new Appointment(year,month,dayOfMonth,hour);
 
-        dbUsers.child("Appointments").child(userId).setValue(appointment);
+        dbAppointments.child(userId).setValue(appointment);
     }
 
 
-    public void readAppointmentFromDB(String userId) {
-        //Appointment appointment = new Appointment(year,month,dayOfMonth,hour);
-        dbUsers.child("Users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(SchedulerActivity.this, " Error getting data ", Toast.LENGTH_LONG).show();
-                   // Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                    //Log.d("firebase", String.valueOf(task.getResult().getValue()));
+  /*  public int readAppointmentFromDB(String userId) {
 
-                }
-            }
-        });
 
-    }
+
+      dbAppointments.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+              int appAvailable = 1;
+              for (DataSnapshot dsp : snapshot.getChildren()) {
+                  checkDBAppointment = dsp.getValue(Appointment.class);
+                  if (dbAppointments.getKey() != signedInUser.getId()){
+                      if (checkDBAppointment.getDayOfMonth() == appointment.getDayOfMonth() && checkDBAppointment.getHour() == appointment.getHour() &&
+                          checkDBAppointment.getMonth() == appointment.getMonth() && checkDBAppointment.getYear() == appointment.getYear()) {
+
+                          appAvailable = 0;
+                          break;
+                      }
+
+
+                  }
+              }
+
+
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+
+          }
+      });
+
+      return appAvailable;
+      }*/
 
 
     @Override

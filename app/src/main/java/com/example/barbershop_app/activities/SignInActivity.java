@@ -45,7 +45,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         mAuth = FirebaseAuth.getInstance();
         dbUsers = FirebaseDatabase.getInstance().getReference("users");
-        //dbUsers.addListenerForSingleValueEvent(valueEventListener);
+
 
 
 
@@ -101,7 +101,7 @@ public class SignInActivity extends AppCompatActivity {
                                                 if (signedInUser.getEmail().equals(email))
                                                     break;
                                             }
-                                            Intent mainMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to Main Menu
+                                            Intent userMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to Main Menu
                                             try {
                                                // Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
                                                 userObj = JsonIO.Object_to_JsonString(signedInUser);
@@ -109,9 +109,9 @@ public class SignInActivity extends AppCompatActivity {
                                                 //Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
                                                 e.printStackTrace();
                                             }
-                                            mainMenuIntent.putExtra("userObj", userObj);
+                                            userMenuIntent.putExtra("userObj", userObj);
                                             //Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
-                                            startActivity(mainMenuIntent);
+                                            startActivity(userMenuIntent);
                                             //Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
                                         }
 
