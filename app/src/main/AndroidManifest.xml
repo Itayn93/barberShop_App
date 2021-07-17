@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BarberShop_App">
-        <activity android:name=".activities.UserBookedAppsActivity"></activity>
+        <activity android:name=".activities.AdminMenuActivity"></activity>
+        <activity android:name=".activities.UserBookedAppsActivity" />
         <activity android:name=".activities.SchedulerActivity" />
         <activity android:name=".activities.UserMenuActivity" />
         <activity android:name=".activities.MainActivity">

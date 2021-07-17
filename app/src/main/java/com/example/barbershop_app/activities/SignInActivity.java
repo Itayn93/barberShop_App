@@ -81,10 +81,11 @@ public class SignInActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(SignInActivity.this,"Sign In Successful",Toast.LENGTH_LONG).show();
-                                    //Log.d("Lifecycle: ", "LoggedInActivity onComplete SignInActivity");
+
                                     signInSuccessful = 1;
 
-                                } else {
+                                }
+                                else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(SignInActivity.this,"No Such User In DB",Toast.LENGTH_LONG).show();
                                 }
@@ -101,18 +102,28 @@ public class SignInActivity extends AppCompatActivity {
                                                 if (signedInUser.getEmail().equals(email))
                                                     break;
                                             }
-                                            Intent userMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to Main Menu
                                             try {
-                                               // Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
+                                                // Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
                                                 userObj = JsonIO.Object_to_JsonString(signedInUser);
                                             } catch (JsonProcessingException e) {
                                                 //Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
                                                 e.printStackTrace();
                                             }
-                                            userMenuIntent.putExtra("userObj", userObj);
-                                            //Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
-                                            startActivity(userMenuIntent);
-                                            //Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
+
+                                            if (email.contains("@admin")){
+                                                Intent adminMenuIntent = new Intent(getApplicationContext(), AdminMenuActivity.class);// go to Admin Menu
+                                                startActivity(adminMenuIntent);
+                                            }
+
+                                            else {
+                                                Intent userMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to User Menu
+
+                                                userMenuIntent.putExtra("userObj", userObj);
+                                                //Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
+                                                startActivity(userMenuIntent);
+                                                //Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
+                                            }
+
                                         }
 
                                         @Override

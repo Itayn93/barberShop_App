@@ -69,9 +69,6 @@ public class UserBookedAppsActivity extends AppCompatActivity {
                     if (uid.equals(signedInUser.getId())) {
                         date.setText(String.valueOf(checkDBAppointment.getDayOfMonth())+"/"+String.valueOf(checkDBAppointment.getMonth())+"/"+String.valueOf(checkDBAppointment.getYear()));
                         hour.setText(checkDBAppointment.getHour());
-
-
-
                     }
                 }
 
