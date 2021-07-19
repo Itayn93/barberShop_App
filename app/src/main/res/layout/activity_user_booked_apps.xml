@@ -61,4 +61,21 @@
 
     </androidx.cardview.widget.CardView>
 
+    <Button
+        android:id="@+id/buttonRescheduleApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:text="reschedule appointment" />
+
+    <Button
+        android:id="@+id/buttonCancelApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:text="cancel appointment" />
+
 </LinearLayout>

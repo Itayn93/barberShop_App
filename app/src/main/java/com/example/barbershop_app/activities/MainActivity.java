@@ -9,14 +9,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.barbershop_app.R;
-import com.example.barbershop_app.activities.RegisterActivity;
-import com.example.barbershop_app.activities.SignInActivity;
+//import com.example.barbershop_app.activities.RegisterActivity;
+//import com.example.barbershop_app.activities.SignInActivity;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    //private FirebaseAuth mAuth;
     Button signInButton;
     Button registerButton;
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
+       // mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
 
 
     }
@@ -77,16 +77,5 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Lifecycle: ", "LoggedInActivity onDestroy");
         super.onDestroy();
     }
-
-
-
-
-
-    public void getDataFromFirebase(){
-
-
-    }
-
-
 
 }

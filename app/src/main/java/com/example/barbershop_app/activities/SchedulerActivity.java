@@ -148,19 +148,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                     }
                 });
 
-                 /*   writeNewAppointment(signedInUser.getId(),appointment);
-                    // if date is available (get data from appointment db)
-                    Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
-
-                    Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
-                    startActivity(userBookedAppsIntent);*/
-
-                }
-
-                 //else {
-                    //Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
-                //}
-            //}
+             }
         });
     }
 

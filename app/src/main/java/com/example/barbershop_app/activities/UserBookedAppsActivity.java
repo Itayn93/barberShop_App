@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +32,14 @@ public class UserBookedAppsActivity extends AppCompatActivity {
     User signedInUser = new User();
     String userObj;
     Appointment checkDBAppointment = new Appointment();
+    Button rescheduleApp;
+    Button cancelApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_booked_apps);
-
+        Log.d("Lifecycle: ", "LoggedInActivity onCreate UserBookedAppsActivity");
         dbUsers = FirebaseDatabase.getInstance().getReference().child("users");
         dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");
 
@@ -48,6 +52,9 @@ public class UserBookedAppsActivity extends AppCompatActivity {
         fullName = findViewById(R.id.info_textFullName);
         date = findViewById(R.id.info_textDate);
         hour = findViewById(R.id.info_textHour);
+        rescheduleApp = findViewById(R.id.buttonRescheduleApp);
+        cancelApp = findViewById(R.id.buttonCancelApp);
+
 
         userObj = getIntent().getStringExtra("userObj");
         try {
@@ -62,7 +69,7 @@ public class UserBookedAppsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //int appAvailable = 1;
-                Log.d("Lifecycle: ", "LoggedInActivity onDataChange SchedulerActivity");
+                Log.d("Lifecycle: ", "LoggedInActivity onDataChange UserBookedAppsActivity");
                 for (DataSnapshot dsp : snapshot.getChildren()) { //enhanced loop
                     checkDBAppointment = dsp.getValue(Appointment.class);
                     String uid = dsp.getKey();
@@ -86,20 +93,48 @@ public class UserBookedAppsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        rescheduleApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent schedulerIntent = new Intent(getApplicationContext(), SchedulerActivity.class);
+                schedulerIntent.putExtra("userObj", userObj);
+                startActivity(schedulerIntent);
+            }
+        });
+
+        cancelApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signedInUser.setFullName("YOU HAVE ");
+                checkDBAppointment.setDayOfMonth(0);
+                checkDBAppointment.setMonth(0);
+                checkDBAppointment.setYear(0);
+                checkDBAppointment.setHour("BOOKED");
+                fullName.setText(signedInUser.getFullName());
+                date.setText(" NO APPOINTMENTS");
+                //hour.setText("BOOKED ");
+                dbAppointments.child(signedInUser.getId()).removeValue();
+                Log.d("Lifecycle: ", "LoggedInActivity cancelApp UserBookedAppsActivity");
+            }
+        });
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("Lifecycle: ", "LoggedInActivity onPause UserBookedAppsActivity");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("Lifecycle: ", "LoggedInActivity onStop UserBookedAppsActivity");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("Lifecycle: ", "LoggedInActivity onDestroy UserBookedAppsActivity");
     }
 }

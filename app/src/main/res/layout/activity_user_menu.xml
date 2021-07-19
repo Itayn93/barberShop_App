@@ -29,20 +29,12 @@
             android:text="Book Appiontment" />
 
         <Button
-            android:id="@+id/buttonCancelAppointment"
+            android:id="@+id/buttonViewBookedApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:padding="20dp"
-            android:text="Cancel Appointment" />
-
-        <Button
-            android:id="@+id/buttonRescheduleAppointment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:padding="20dp"
-            android:text="Reschedule Appointment" />
+            android:text="View Booked Appointment" />
 
         <Button
             android:id="@+id/buttonLogOutMainMenu"
