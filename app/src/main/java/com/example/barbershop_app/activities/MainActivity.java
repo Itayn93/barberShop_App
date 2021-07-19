@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Lifecycle: ", "LoggedInActivity onCreate");
+        Log.d("Lifecycle: ", "MainActivity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        Log.d("Lifecycle: ", "LoggedInActivity onStart");
+        Log.d("Lifecycle: ", "MainActivity onStart");
         super.onStart();
 
         signInButton = findViewById(R.id.buttonSignIn);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.d("Lifecycle: ", "LoggedInActivity onResume");
+        Log.d("Lifecycle: ", "MainActivity onResume");
         super.onResume();
 
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //goToRegisterPage(v);
                 Intent registerIntent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(registerIntent);
 
@@ -68,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.d("Lifecycle: ", "LoggedInActivity onPause");
+        Log.d("Lifecycle: ", "MainActivity onPause");
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d("Lifecycle: ", "LoggedInActivity onDestroy");
+        Log.d("Lifecycle: ", "MainActivity onDestroy");
         super.onDestroy();
     }
 

@@ -24,11 +24,13 @@ public class UserMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_menu);
+        Log.d("Lifecycle: ", "UserMenuActivity onCreate ");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("Lifecycle: ", "UserMenuActivity onStart ");
         bookAppointmentButton = findViewById(R.id.buttonBookAppiontment);
         viewBookedAppointment = findViewById(R.id.buttonViewBookedApp);
         logOutButton = findViewById(R.id.buttonLogOutMainMenu);
@@ -39,10 +41,11 @@ public class UserMenuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d("Lifecycle: ", "UserMenuActivity onResume ");
         bookAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Lifecycle: ", "UserMenuActivity onClick  bookAppointmentButton");
                 Intent goToSchedulerActivity = new Intent(getApplicationContext(), SchedulerActivity.class);
                 goToSchedulerActivity.putExtra("userObj", userObj);
                 startActivity(goToSchedulerActivity);
@@ -52,7 +55,7 @@ public class UserMenuActivity extends AppCompatActivity {
         viewBookedAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Lifecycle: ", "LoggedInActivity onClick viewBookedAppointment");
+                Log.d("Lifecycle: ", "UserMenuActivity onClick viewBookedAppointment");
                 Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
                 userBookedAppsIntent.putExtra("userObj", userObj);
                 startActivity(userBookedAppsIntent);
@@ -62,6 +65,7 @@ public class UserMenuActivity extends AppCompatActivity {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Lifecycle: ", "UserMenuActivity onClick logOutButton");
                 Intent returnToMainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);// go to Main Menu
                 startActivity(returnToMainActivityIntent);
             }
@@ -71,16 +75,19 @@ public class UserMenuActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("Lifecycle: ", "UserMenuActivity onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("Lifecycle: ", "UserMenuActivity onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("Lifecycle: ", "UserMenuActivity onDestroy");
     }
 
 }

@@ -2,48 +2,25 @@ package com.example.barbershop_app.classes;
 
 public class Appointment {
 
-    private int year;
-    private int month;
-    private int dayOfMonth;
+    private String date;
     private String hour;
 
-
     public Appointment(){
-        //this.year = 0;
-        //this.month = 0;
-        //this.dayOfMonth = 0;
-        //this.hour = "0";
+
     }
 
     public Appointment(int year , int month , int dayOfMonth , String hour){
-        this.year = year;
-        this.month = month;
-        this.dayOfMonth = dayOfMonth;
+        this.date = String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" + String.valueOf(year);
         this.hour = hour;
     }
 
-    public int getYear() {
-        return year;
+
+    public String getDate() {
+        return date;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDayOfMonth() {
-        return dayOfMonth;
-    }
-
-    public void setDayOfMonth(int dayOfMonth) {
-        this.dayOfMonth = dayOfMonth;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getHour() {

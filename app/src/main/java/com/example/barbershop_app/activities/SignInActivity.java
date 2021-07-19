@@ -40,21 +40,18 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       // Log.d("Lifecycle: ", "LoggedInActivity onCreate SignInActivity");
+        Log.d("Lifecycle: ", "SignInActivity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         mAuth = FirebaseAuth.getInstance();
         dbUsers = FirebaseDatabase.getInstance().getReference("users");
-
-
-
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-      //  Log.d("Lifecycle: ", "LoggedInActivity onStart SignInActivity");
+        Log.d("Lifecycle: ", "SignInActivity onStart ");
         confirmSignInButton = findViewById(R.id.buttonCofirmSignIn);
         signInEmailText = findViewById(R.id.editTextEmailSignIn);
         signInPasswordText = findViewById(R.id.editTextPasswordSignIn);
@@ -64,12 +61,12 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       // Log.d("Lifecycle: ", "LoggedInActivity onResume SignInActivity");
+        Log.d("Lifecycle: ", "SignInActivity onResume ");
 
         confirmSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.d("Lifecycle: ", "LoggedInActivity onClick SignInActivity");
+                Log.d("Lifecycle: ", "SignInActivity  onClick confirmSignInButton");
 
                 String email = signInEmailText.getText().toString();
                 String password = signInPasswordText.getText().toString();
@@ -79,6 +76,7 @@ public class SignInActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    Log.d("Lifecycle: ", "SignInActivity  onComplete confirmSignInButton");
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(SignInActivity.this,"Sign In Successful",Toast.LENGTH_LONG).show();
 
@@ -91,22 +89,20 @@ public class SignInActivity extends AppCompatActivity {
                                 }
 
                                 if (signInSuccessful == 1){ //// get current signed in user and put extra to main menu activity using JsonIO class
-                                    dbUsers.addValueEventListener(new ValueEventListener() {
+                                    dbUsers.addListenerForSingleValueEvent(new ValueEventListener() {
 
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             //User signedInUser = new User();
-                                            //Log.d("Lifecycle: ", "LoggedInActivity onDataChange SignInActivity");
+                                            Log.d("Lifecycle: ", "SignInActivity onDataChange ");
                                             for (DataSnapshot dsp : snapshot.getChildren()) {
                                                 signedInUser = dsp.getValue(User.class);
                                                 if (signedInUser.getEmail().equals(email))
                                                     break;
                                             }
                                             try {
-                                                // Log.d("Lifecycle: ", "LoggedInActivity INSIDE TRY SignInActivity");
                                                 userObj = JsonIO.Object_to_JsonString(signedInUser);
                                             } catch (JsonProcessingException e) {
-                                                //Log.d("Lifecycle: ", "LoggedInActivity INSIDE CATCH SignInActivity");
                                                 e.printStackTrace();
                                             }
 
@@ -117,18 +113,15 @@ public class SignInActivity extends AppCompatActivity {
 
                                             else {
                                                 Intent userMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to User Menu
-
                                                 userMenuIntent.putExtra("userObj", userObj);
-                                                //Log.d("Lifecycle: ", "LoggedInActivity putExtra SignInActivity");
                                                 startActivity(userMenuIntent);
-                                                //Log.d("Lifecycle: ", "LoggedInActivity AFTER startActivity SignInActivity");
                                             }
 
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-                                           // Log.d("Lifecycle: ", "LoggedInActivity onCancelled SignInActivity");
+                                            Log.d("Lifecycle: ", " onCancelled SignInActivity");
                                         }
                                     });
 
@@ -145,21 +138,21 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("Lifecycle: ", "LoggedInActivity onPause");
+        Log.d("Lifecycle: ", "SignInActivity onPause");
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("Lifecycle: ", "LoggedInActivity onStop");
+        Log.d("Lifecycle: ", "SignInActivity onStop");
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("Lifecycle: ", "LoggedInActivity onDestroy");
+        Log.d("Lifecycle: ", "SignInActivity onDestroy");
 
     }
 

@@ -54,7 +54,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduler);
-
+        Log.d("Lifecycle: ", " onCrate SchedulerActivity");
         //mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
         dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");// enable read/write to DB
 
@@ -65,7 +65,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     @Override
     protected void onStart() {
         super.onStart();
-
+        Log.d("Lifecycle: ", " onStart SchedulerActivity");
         calendarView = findViewById(R.id.calendarView);
         bookButton = findViewById(R.id.buttonBookScheduler);
 
@@ -84,6 +84,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("Lifecycle: ", " onResume SchedulerActivity");
         try {
             signedInUser = JsonIO.JsonString_to_Object(userObj,User.class);
         } catch (JsonProcessingException e) {
@@ -92,12 +93,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-
-                appointment.setYear(year);
-                appointment.setMonth(month+1);
-                appointment.setDayOfMonth(dayOfMonth);
-               // System.out.println(signedInUser.getId());
-
+                appointment.setDate(String.valueOf(dayOfMonth) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
             }
         });
 
@@ -107,35 +103,45 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                 //int appointmentAvailable = readAppointmentFromDB(signedInUser.getId());
                 //if (appointmentAvailable == 1){
                 // check if appointment not booked already !
-                Log.d("Lifecycle: ", "LoggedInActivity onClick SchedulerActivity");
-                dbAppointments.addValueEventListener(new ValueEventListener() {
+                Log.d("Lifecycle: ", " bookButton onClick SchedulerActivity");
+                dbAppointments.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         //int appAvailable = 1;
-                        Log.d("Lifecycle: ", "LoggedInActivity onDataChange SchedulerActivity");
-                        for (DataSnapshot dsp : snapshot.getChildren()) { //enhanced loop
-                            checkDBAppointment = dsp.getValue(Appointment.class);
-                            String uid = dsp.getKey();
-                            if (!uid.equals(signedInUser.getId())) {
-                                if (checkDBAppointment.getDayOfMonth() == appointment.getDayOfMonth() && checkDBAppointment.getHour().equals(appointment.getHour())  &&
-                                        checkDBAppointment.getMonth() == appointment.getMonth() && checkDBAppointment.getYear() == appointment.getYear()) {
-                                    //Log.d("Lifecycle: ", "LoggedInActivity onDataChange IF SchedulerActivity");
-                                    Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
-                                    break;
+                        Log.d("Lifecycle: ", "bookButton onDataChange SchedulerActivity");
+                        if (snapshot.getValue() == null){
+                            writeNewAppointment(signedInUser.getId(),appointment);
+
+                            Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
+
+                            Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
+                            userBookedAppsIntent.putExtra("userObj", userObj);
+                            startActivity(userBookedAppsIntent);
+                        }
+                        else {
+                            for (DataSnapshot dsp : snapshot.getChildren()) { //enhanced loop
+                                checkDBAppointment = dsp.getValue(Appointment.class);
+                                String uid = dsp.getKey();
+                                if (!uid.equals(signedInUser.getId())) {
+                                    Log.d("Lifecycle: ", "bookButton onDataChange IF not same UID SchedulerActivity");
+                                    if (checkDBAppointment.getHour().equals((appointment.getHour())) && checkDBAppointment.getDate().equals(appointment.getDate())) {
+                                        Log.d("Lifecycle: ", "bookButton onDataChange IF SchedulerActivity");
+                                        Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
+                                        break;
+                                    } else { // if appointment is available
+                                        Log.d("Lifecycle: ", "bookButton onDataChange ELSE SchedulerActivity");
+                                        writeNewAppointment(signedInUser.getId(), appointment);
+
+                                        Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
+
+                                        Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
+                                        userBookedAppsIntent.putExtra("userObj", userObj);
+                                        startActivity(userBookedAppsIntent);
+
+                                    }
+
+
                                 }
-                                else { // if appointment is available
-                                    //Log.d("Lifecycle: ", "LoggedInActivity onDataChange ELSE SchedulerActivity");
-                                    writeNewAppointment(signedInUser.getId(),appointment);
-
-                                    Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
-
-                                    Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
-                                    userBookedAppsIntent.putExtra("userObj", userObj);
-                                    startActivity(userBookedAppsIntent);
-
-                                }
-
-
                             }
                         }
 
@@ -155,16 +161,19 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("Lifecycle: ", " onPause SchedulerActivity");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("Lifecycle: ", " onStop SchedulerActivity");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("Lifecycle: ", " onDestroy SchedulerActivity");
     }
 
 
@@ -174,46 +183,10 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     }
 
 
-  /*  public int readAppointmentFromDB(String userId) {
-
-
-
-      dbAppointments.addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-              int appAvailable = 1;
-              for (DataSnapshot dsp : snapshot.getChildren()) {
-                  checkDBAppointment = dsp.getValue(Appointment.class);
-                  if (dbAppointments.getKey() != signedInUser.getId()){
-                      if (checkDBAppointment.getDayOfMonth() == appointment.getDayOfMonth() && checkDBAppointment.getHour() == appointment.getHour() &&
-                          checkDBAppointment.getMonth() == appointment.getMonth() && checkDBAppointment.getYear() == appointment.getYear()) {
-
-                          appAvailable = 0;
-                          break;
-                      }
-
-
-                  }
-              }
-
-
-          }
-
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-
-          }
-      });
-
-      return appAvailable;
-      }*/
-
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String hourSelected = parent.getItemAtPosition(position).toString();
         appointment.setHour(hourSelected);
-        //Toast.makeText(parent.getContext(), hourSelected,Toast.LENGTH_SHORT).show();
     }
 
     @Override
