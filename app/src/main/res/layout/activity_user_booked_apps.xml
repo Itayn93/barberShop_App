@@ -22,8 +22,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="296dp"
+        android:layout_height="262dp"
         android:layout_gravity="center"
         android:background="@color/black"
         app:cardBackgroundColor="#8BC34A"
@@ -32,7 +32,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="257dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -41,41 +41,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:text="YOU HAVE" />
 
             <TextView
                 android:id="@+id/info_textDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:text="NO APPOINTMENT" />
 
             <TextView
                 android:id="@+id/info_textHour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:text="BOOKED" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/buttonRescheduleApp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="20dp"
-        android:padding="20dp"
-        android:text="reschedule appointment" />
+    <LinearLayout
+        android:layout_width="387dp"
+        android:layout_height="298dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonCancelApp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="20dp"
-        android:text="cancel appointment" />
+        <Button
+            android:id="@+id/buttonRescheduleApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:text="reschedule appointment" />
+
+        <Button
+            android:id="@+id/buttonCancelApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:text="cancel appointment" />
+
+        <Button
+            android:id="@+id/buttonLogOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:text="Log Out" />
+    </LinearLayout>
 
 </LinearLayout>

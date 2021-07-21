@@ -2,9 +2,11 @@ package com.example.barbershop_app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,13 +43,15 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
     //private FirebaseAuth mAuth;
     private DatabaseReference dbAppointments;
-    CalendarView calendarView;
+   // CalendarView calendarView;
+    DatePicker datePicker;
     Button bookButton;
     Appointment appointment = new Appointment();
     Appointment checkDBAppointment = new Appointment();
     Spinner hourPicker;
     User signedInUser = new User();
     String userObj;
+    int appBooked = 0;
 
 
     @Override
@@ -66,7 +70,8 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     protected void onStart() {
         super.onStart();
         Log.d("Lifecycle: ", " onStart SchedulerActivity");
-        calendarView = findViewById(R.id.calendarView);
+       // calendarView = findViewById(R.id.calendarView);
+        datePicker = findViewById(R.id.datePicker);
         bookButton = findViewById(R.id.buttonBookScheduler);
 
         hourPicker = findViewById(R.id.spinnerHourPicker);
@@ -81,6 +86,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,24 +96,31 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+        datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                appointment.setDate(String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1) + "/" + String.valueOf(year));
+            }
+        });
+       /* calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 appointment.setDate(String.valueOf(dayOfMonth) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
             }
-        });
+        });*/
 
         bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //int appointmentAvailable = readAppointmentFromDB(signedInUser.getId());
-                //if (appointmentAvailable == 1){
-                // check if appointment not booked already !
                 Log.d("Lifecycle: ", " bookButton onClick SchedulerActivity");
+
+                appointment.setUserName(signedInUser.getFullName());
+
                 dbAppointments.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        //int appAvailable = 1;
+
                         Log.d("Lifecycle: ", "bookButton onDataChange SchedulerActivity");
                         if (snapshot.getValue() == null){
                             writeNewAppointment(signedInUser.getId(),appointment);
@@ -126,23 +139,29 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                                     Log.d("Lifecycle: ", "bookButton onDataChange IF not same UID SchedulerActivity");
                                     if (checkDBAppointment.getHour().equals((appointment.getHour())) && checkDBAppointment.getDate().equals(appointment.getDate())) {
                                         Log.d("Lifecycle: ", "bookButton onDataChange IF SchedulerActivity");
-                                        Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
+                                        appBooked = 1;
                                         break;
-                                    } else { // if appointment is available
-                                        Log.d("Lifecycle: ", "bookButton onDataChange ELSE SchedulerActivity");
-                                        writeNewAppointment(signedInUser.getId(), appointment);
-
-                                        Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
-
-                                        Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
-                                        userBookedAppsIntent.putExtra("userObj", userObj);
-                                        startActivity(userBookedAppsIntent);
-
                                     }
-
-
                                 }
                             }
+                            if (appBooked == 1){
+
+                                Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
+                            }
+                            else { // if appointment is available
+                                Log.d("Lifecycle: ", "bookButton onDataChange ELSE SchedulerActivity");
+                                writeNewAppointment(signedInUser.getId(), appointment);
+
+                                Toast.makeText(SchedulerActivity.this, "Appointment Booked !", Toast.LENGTH_LONG).show();
+
+                                Intent userBookedAppsIntent = new Intent(getApplicationContext(), UserBookedAppsActivity.class);// go to Main Menu
+                                userBookedAppsIntent.putExtra("userObj", userObj);
+                                startActivity(userBookedAppsIntent);
+
+                            }
+
+
+
                         }
 
 

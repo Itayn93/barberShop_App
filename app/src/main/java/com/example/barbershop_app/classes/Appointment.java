@@ -2,6 +2,7 @@ package com.example.barbershop_app.classes;
 
 public class Appointment {
 
+    private String userName;
     private String date;
     private String hour;
 
@@ -14,6 +15,14 @@ public class Appointment {
         this.hour = hour;
     }
 
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getDate() {
         return date;

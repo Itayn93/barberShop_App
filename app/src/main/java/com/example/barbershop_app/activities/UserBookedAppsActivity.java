@@ -34,6 +34,7 @@ public class UserBookedAppsActivity extends AppCompatActivity {
     Appointment checkDBAppointment = new Appointment();
     Button rescheduleApp;
     Button cancelApp;
+    Button logOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class UserBookedAppsActivity extends AppCompatActivity {
         hour = findViewById(R.id.info_textHour);
         rescheduleApp = findViewById(R.id.buttonRescheduleApp);
         cancelApp = findViewById(R.id.buttonCancelApp);
+        logOutButton = findViewById(R.id.buttonLogOut);
 
 
         userObj = getIntent().getStringExtra("userObj");
@@ -81,7 +83,7 @@ public class UserBookedAppsActivity extends AppCompatActivity {
                     checkDBAppointment = dsp.getValue(Appointment.class);
                     String uid = dsp.getKey();
                     if (uid.equals(signedInUser.getId())) {
-                        fullName.setText(signedInUser.getFullName());
+                        fullName.setText(checkDBAppointment.getUserName());
                         date.setText(checkDBAppointment.getDate());//String.valueOf(checkDBAppointment.getDayOfMonth())+"/"+String.valueOf(checkDBAppointment.getMonth())+"/"+String.valueOf(checkDBAppointment.getYear()));
                         hour.setText(checkDBAppointment.getHour());
                     }
@@ -108,14 +110,23 @@ public class UserBookedAppsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Lifecycle: ", "cancelApp onClick UserBookedAppsActivity");
-                signedInUser.setFullName(" YOU HAVE ");
+                checkDBAppointment.setUserName(" YOU HAVE ");
                 checkDBAppointment.setDate(" NO APPOINTMENTS");
                 checkDBAppointment.setHour(" BOOKED ");
-                fullName.setText(signedInUser.getFullName());
+                fullName.setText(checkDBAppointment.getUserName());
                 date.setText(checkDBAppointment.getDate());
                 hour.setText(checkDBAppointment.getHour());
                 dbAppointments.child(signedInUser.getId()).removeValue();
 
+            }
+        });
+
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Lifecycle: ", "UserMenuActivity onClick logOutButton");
+                Intent returnToMainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);// go to Main Menu
+                startActivity(returnToMainActivityIntent);
             }
         });
 

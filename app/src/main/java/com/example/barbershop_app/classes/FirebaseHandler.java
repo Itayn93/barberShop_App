@@ -20,7 +20,7 @@ public class FirebaseHandler {
 
     public ArrayList<User> getUsersList(){
 
-        dbUsers.addValueEventListener(new ValueEventListener() {
+        dbUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 for (DataSnapshot userSnapshot: datasnapshot.getChildren()) {
@@ -40,7 +40,7 @@ public class FirebaseHandler {
 
     public ArrayList<Appointment> getAppointmentsList(){
 
-        dbAppointments.addValueEventListener(new ValueEventListener() {
+        dbAppointments.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 for (DataSnapshot appointmentSnapshot: datasnapshot.getChildren()) {
