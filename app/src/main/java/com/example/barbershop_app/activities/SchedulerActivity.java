@@ -5,6 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,15 +43,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.DateTime;
+
 public class SchedulerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    String[] hours = { "08:00", "08:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00",
-                       "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
-                       "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"};
-
-    //private FirebaseAuth mAuth;
     private DatabaseReference dbAppointments;
-   // CalendarView calendarView;
     DatePicker datePicker;
     Button bookButton;
     Appointment appointment = new Appointment();
@@ -52,6 +56,13 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     User signedInUser = new User();
     String userObj;
     int appBooked = 0;
+    DateTime dt = new DateTime();
+    int hour;
+    int minute;
+    String fullHour;
+    String [] hoursArray;
+    Calendar calendar = Calendar.getInstance();
+
 
 
     @Override
@@ -59,30 +70,34 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduler);
         Log.d("Lifecycle: ", " onCrate SchedulerActivity");
-        //mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
         dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");// enable read/write to DB
-
-
-
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onStart() {
         super.onStart();
         Log.d("Lifecycle: ", " onStart SchedulerActivity");
-       // calendarView = findViewById(R.id.calendarView);
+
         datePicker = findViewById(R.id.datePicker);
+        datePicker.setMinDate(calendar.getTimeInMillis());
+
         bookButton = findViewById(R.id.buttonBookScheduler);
+
+        hour = dt.toLocalTime().getHourOfDay()+3;
+        minute = dt.toLocalTime().getMinuteOfHour();
+        fullHour = hour + ":" + minute;
 
         hourPicker = findViewById(R.id.spinnerHourPicker);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hours);
+        hoursArray = UpdatedHoursArray(fullHour,datePicker);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hoursArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hourPicker.setAdapter(adapter);
         hourPicker.setOnItemSelectedListener(this);
 
-       userObj = getIntent().getStringExtra("userObj");
-
+        userObj = getIntent().getStringExtra("userObj");
 
     }
 
@@ -103,12 +118,6 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                 appointment.setDate(String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1) + "/" + String.valueOf(year));
             }
         });
-       /* calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                appointment.setDate(String.valueOf(dayOfMonth) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
-            }
-        });*/
 
         bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +154,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                                 }
                             }
                             if (appBooked == 1){
-
+                                Log.d("Lifecycle: ", "bookButton onDataChange appBooked = 1 SchedulerActivity");
                                 Toast.makeText(SchedulerActivity.this, "Appointment unavailable ", Toast.LENGTH_LONG).show();
                             }
                             else { // if appointment is available
@@ -211,5 +220,50 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public static String[] UpdatedHoursArray(String currentHour,DatePicker datePicker) {
+        String[] hours = { "08:00", "08:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00",
+                           "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+                           "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"};
+
+        int counter=0;
+
+        Date dateCurrentHour = null;
+        try {
+             dateCurrentHour = new SimpleDateFormat("HH:mm").parse(currentHour);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (String s : hours) {
+            int i = 0;
+            try {
+                Date dateChosenHour = new SimpleDateFormat("HH:mm").parse(s);
+                if (dateChosenHour.before(dateCurrentHour)) {
+                    counter++;
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int relevantHoursSize = hours.length - counter;
+        if (relevantHoursSize == 0) {
+            // move to next date in date picker
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            datePicker.setMinDate(cal.getTimeInMillis());
+           return hours;
+        }
+
+        String [] relevantHours = new String[relevantHoursSize];
+        for(int j = 0; j < relevantHours.length; j++){
+            relevantHours[j] = hours[counter];
+            counter++;
+        }
+
+        return relevantHours;
     }
 }

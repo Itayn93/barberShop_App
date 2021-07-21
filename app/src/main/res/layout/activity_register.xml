@@ -93,5 +93,6 @@
         android:layout_gravity="bottom"
         android:layout_margin="20dp"
         android:onClick="ConfirmRegistration"
+        android:padding="20dp"
         android:text="Register" />
 </FrameLayout>

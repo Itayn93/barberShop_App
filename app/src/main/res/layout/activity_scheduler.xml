@@ -18,6 +18,8 @@
             android:text="Please select date"
             android:textSize="24sp" />
 
+
+
         <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"

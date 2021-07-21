@@ -34,7 +34,7 @@ public class AdminBookedAppsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     CustomAdapterAdminBookedApps customAdapterAdminBookedApps;
     private DatabaseReference dbAppointments;
-    FirebaseHandler firebaseHandler = new FirebaseHandler();
+    //FirebaseHandler firebaseHandler = new FirebaseHandler();
     //ArrayList<User> usersList = new ArrayList<>();
 
 
