@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,7 +12,7 @@ import com.example.barbershop_app.R;
 public class AdminMenuActivity extends AppCompatActivity {
 
     Button viewBookedAppointments;
-    Button enterUnavailableDates;
+    Button settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,7 @@ public class AdminMenuActivity extends AppCompatActivity {
         super.onStart();
 
         viewBookedAppointments = findViewById(R.id.buttonViewBookedApps);
-        enterUnavailableDates = findViewById(R.id.buttonEnterUnavailavbleDates);
+        settings = findViewById(R.id.buttonSettings);
     }
 
     @Override
@@ -41,9 +40,11 @@ public class AdminMenuActivity extends AppCompatActivity {
             }
         });
 
-        enterUnavailableDates.setOnClickListener(new View.OnClickListener() {
+        settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent AdminUnavailableIntent = new Intent(getApplicationContext(), AdminUnavailableActivity.class);
+                startActivity(AdminUnavailableIntent);
 
             }
         });
