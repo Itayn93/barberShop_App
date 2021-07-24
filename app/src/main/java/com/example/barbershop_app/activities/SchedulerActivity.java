@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -45,11 +47,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.joda.time.DateTime;
 
-public class SchedulerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.MonthAdapter;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+public class SchedulerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,DatePickerDialog.OnDateSetListener{//} , TimePickerDialog.OnTimeSetListener,  {
 
     private DatabaseReference dbAppointments;
-    DatePicker datePicker;
+    //DatePicker datePicker;
     Button bookButton;
+    Button enterDateDisableButton;
+    TextView dateSelected;
     Appointment appointment = new Appointment();
     Appointment checkDBAppointment = new Appointment();
     Spinner hourPicker;
@@ -61,8 +69,9 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     int minute;
     String fullHour;
     String [] hoursArray;
-    Calendar calendar = Calendar.getInstance();
-
+    Calendar now = Calendar.getInstance();
+    DatePickerDialog datePickerDialog ;
+    //TimePickerDialog timePickerDialog ;
 
 
     @Override
@@ -71,6 +80,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_scheduler);
         Log.d("Lifecycle: ", " onCrate SchedulerActivity");
         dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");// enable read/write to DB
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -79,10 +89,14 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         super.onStart();
         Log.d("Lifecycle: ", " onStart SchedulerActivity");
 
-        datePicker = findViewById(R.id.datePicker);
-        datePicker.setMinDate(calendar.getTimeInMillis());
+        //datePicker = findViewById(R.id.datePicker);
+        //datePicker.setMinDate(calendar.getTimeInMillis());
 
         bookButton = findViewById(R.id.buttonBookScheduler);
+        enterDateDisableButton = findViewById(R.id.buttonEnterDateDisable);
+
+        dateSelected = findViewById(R.id.info_textDateSelected);
+
 
         hour = dt.toLocalTime().getHourOfDay()+3;
         minute = dt.toLocalTime().getMinuteOfHour();
@@ -90,7 +104,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
         hourPicker = findViewById(R.id.spinnerHourPicker);
 
-        hoursArray = UpdatedHoursArray(fullHour,datePicker);
+        hoursArray = UpdatedHoursArray(fullHour);//,datePicker);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hoursArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -112,12 +126,30 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
             e.printStackTrace();
         }
 
-        datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+       /* datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 appointment.setDate(String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1) + "/" + String.valueOf(year));
             }
+        });*/
+
+        enterDateDisableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog = DatePickerDialog.newInstance(SchedulerActivity.this, now.get(Calendar.YEAR),now.get(Calendar.MONTH),now.get(Calendar.DAY_OF_MONTH));
+                configureDatePickerDialog();
+                datePickerDialog.setTitle("Choose A Date");
+                datePickerDialog.show(getSupportFragmentManager(),"DatePicker");
+            }
         });
+
+
+
+
+
+
+
+
 
         bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,7 +254,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
     }
 
-    public static String[] UpdatedHoursArray(String currentHour,DatePicker datePicker) {
+    public static String[] UpdatedHoursArray(String currentHour){//,DatePicker datePicker) {
         String[] hours = { "08:00", "08:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00",
                            "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
                            "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"};
@@ -254,7 +286,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
             // move to next date in date picker
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_YEAR, 1);
-            datePicker.setMinDate(cal.getTimeInMillis());
+            //datePicker.setMinDate(cal.getTimeInMillis());
            return hours;
         }
 
@@ -265,5 +297,38 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         }
 
         return relevantHours;
+    }
+
+
+    // DatePickerDialog
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1) + "/" + String.valueOf(year);
+        appointment.setDate(date);
+        dateSelected.setText(date);
+        Toast.makeText(this, date ,Toast.LENGTH_LONG).show();
+    }
+    // TimePickerDialog
+ /*   @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+
+    }
+*/
+    public void configureDatePickerDialog(){
+        Calendar min_date = Calendar.getInstance();;
+        Calendar max_date = Calendar.getInstance();
+        int Year = now.get(Calendar.YEAR);
+        max_date.set(Calendar.YEAR, Year +2);
+        datePickerDialog.setMaxDate(max_date);
+        datePickerDialog.setMinDate(min_date);
+        //Disable all FRIDAYS and SATURDAYS between Min and Max Dates
+        for (Calendar loopdate = min_date; min_date.before(max_date); min_date.add(Calendar.DATE, 1), loopdate = min_date) {
+            int dayOfWeek = loopdate.get(Calendar.DAY_OF_WEEK);
+            if (dayOfWeek == Calendar.FRIDAY || dayOfWeek == Calendar.SATURDAY) {
+                Calendar[] disabledDays =  new Calendar[1];
+                disabledDays[0] = loopdate;
+                datePickerDialog.setDisabledDays(disabledDays);
+            }
+        }
     }
 }

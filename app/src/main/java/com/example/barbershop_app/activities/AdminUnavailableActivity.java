@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 //import android.app.DatePickerDialog;
 //import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,10 @@ public class AdminUnavailableActivity extends AppCompatActivity implements DateP
     DatePickerDialog datePickerDialog ;
     TimePickerDialog timePickerDialog ;
     //int Year, Month, Day, Hour, Minute;
-    Calendar now = Calendar.getInstance(); ;
+    Calendar now = Calendar.getInstance();
+    //public static final String SHARED_PREFS = "sharedPrefs";
+    //public static final String DATE = "date";
+   // public static final String TIME = "time";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,8 @@ public class AdminUnavailableActivity extends AppCompatActivity implements DateP
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
+        //saveDate(year,monthOfYear,dayOfMonth);
+
         Toast.makeText(this, String.format("You Selected : %d/%d/%d",dayOfMonth,monthOfYear,year),Toast.LENGTH_LONG).show();
     }
 
@@ -93,4 +99,13 @@ public class AdminUnavailableActivity extends AppCompatActivity implements DateP
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         Toast.makeText(this, String.format("You Selected : %02d:%02d:%02d",hourOfDay,minute,second),Toast.LENGTH_LONG).show();
     }
+
+
+   /* public void saveDate( int year, int monthOfYear, int dayOfMonth){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1) + "/" + String.valueOf(year);
+
+        editor.putString(DATE,date.toString());
+    }*/
 }

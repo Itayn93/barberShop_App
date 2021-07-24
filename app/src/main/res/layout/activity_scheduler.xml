@@ -19,6 +19,7 @@
             android:textSize="24sp" />
 
 
+<!--
 
         <DatePicker
             android:id="@+id/datePicker"
@@ -26,7 +27,28 @@
             android:layout_height="399dp"
             android:layout_gravity="center_horizontal"
             android:background="@color/white" />
+-->
 
+
+        <Button
+            android:id="@+id/buttonEnterDateDisable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="20dp"
+            android:text="Enter A Date" />
+
+        <TextView
+            android:id="@+id/info_textDateSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center_horizontal"
+            android:padding="20dp"
+            android:text="No Date Selected"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            android:textStyle="italic" />
 
         <Spinner
             android:id="@+id/spinnerHourPicker"
