@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
@@ -36,13 +36,49 @@
             android:padding="20dp"
             android:text="Enter Date" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerStartHour"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_light_background" />
+
+            <Spinner
+                android:id="@+id/spinnerEndHour"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_light_background"></Spinner>
+                //android:textAlignment="textStart" />
+
+        </LinearLayout>
+
         <Button
-            android:id="@+id/buttonEnterTime"
+            android:id="@+id/buttonConfimUnavailability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:padding="20dp"
-            android:text="Enter Time" />
+            android:text="Confim Unavailablity" />
+
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAdminLogOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:text="Log Out" />
 
 </LinearLayout>

@@ -25,7 +25,7 @@ public class AdminMenuActivity extends AppCompatActivity {
         super.onStart();
 
         viewBookedAppointments = findViewById(R.id.buttonViewBookedApps);
-        settings = findViewById(R.id.buttonSettings);
+        settings = findViewById(R.id.buttonUnavilability);
     }
 
     @Override

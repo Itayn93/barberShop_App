@@ -71,65 +71,64 @@ public class SignInActivity extends AppCompatActivity {
                 String email = signInEmailText.getText().toString();
                 String password = signInPasswordText.getText().toString();
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("Lifecycle: ", "SignInActivity  onComplete confirmSignInButton");
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(SignInActivity.this,"Sign In Successful",Toast.LENGTH_LONG).show();
 
-                                    signInSuccessful = 1;
+                    mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("Lifecycle: ", "SignInActivity  onComplete confirmSignInButton");
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Toast.makeText(SignInActivity.this, "Sign In Successful", Toast.LENGTH_LONG).show();
+
+                                        signInSuccessful = 1;
+
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(SignInActivity.this, "No Such User In DB", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    if (signInSuccessful == 1) { //// get current signed in user and put extra to main menu activity using JsonIO class
+                                        dbUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                //User signedInUser = new User();
+                                                Log.d("Lifecycle: ", "SignInActivity onDataChange ");
+                                                for (DataSnapshot dsp : snapshot.getChildren()) {
+                                                    signedInUser = dsp.getValue(User.class);
+                                                    if (signedInUser.getEmail().equals(email))
+                                                        break;
+                                                }
+                                                try {
+                                                    userObj = JsonIO.Object_to_JsonString(signedInUser);
+                                                } catch (JsonProcessingException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                if (email.contains("@admin")) {
+                                                    Intent adminMenuIntent = new Intent(getApplicationContext(), AdminMenuActivity.class);// go to Admin Menu
+                                                    startActivity(adminMenuIntent);
+                                                } else {
+                                                    Intent userMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to User Menu
+                                                    userMenuIntent.putExtra("userObj", userObj);
+                                                    startActivity(userMenuIntent);
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Log.d("Lifecycle: ", " onCancelled SignInActivity");
+                                            }
+                                        });
+
+                                    }
 
                                 }
-                                else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(SignInActivity.this,"No Such User In DB",Toast.LENGTH_LONG).show();
-                                }
 
-                                if (signInSuccessful == 1){ //// get current signed in user and put extra to main menu activity using JsonIO class
-                                    dbUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+                            });
 
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            //User signedInUser = new User();
-                                            Log.d("Lifecycle: ", "SignInActivity onDataChange ");
-                                            for (DataSnapshot dsp : snapshot.getChildren()) {
-                                                signedInUser = dsp.getValue(User.class);
-                                                if (signedInUser.getEmail().equals(email))
-                                                    break;
-                                            }
-                                            try {
-                                                userObj = JsonIO.Object_to_JsonString(signedInUser);
-                                            } catch (JsonProcessingException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            if (email.contains("@admin")){
-                                                Intent adminMenuIntent = new Intent(getApplicationContext(), AdminMenuActivity.class);// go to Admin Menu
-                                                startActivity(adminMenuIntent);
-                                            }
-
-                                            else {
-                                                Intent userMenuIntent = new Intent(getApplicationContext(), UserMenuActivity.class);// go to User Menu
-                                                userMenuIntent.putExtra("userObj", userObj);
-                                                startActivity(userMenuIntent);
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Log.d("Lifecycle: ", " onCancelled SignInActivity");
-                                        }
-                                    });
-
-                                }
-
-                            }
-
-                        });
 
             }
         });
