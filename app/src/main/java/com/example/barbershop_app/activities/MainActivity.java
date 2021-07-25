@@ -7,16 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import com.example.barbershop_app.R;
-//import com.example.barbershop_app.activities.RegisterActivity;
-//import com.example.barbershop_app.activities.SignInActivity;
 import com.google.firebase.FirebaseApp;
-//import com.google.firebase.auth.FirebaseAuth;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    //private FirebaseAuth mAuth;
+
     Button signInButton;
     Button registerButton;
 
@@ -26,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-       // mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
+
 
 
     }

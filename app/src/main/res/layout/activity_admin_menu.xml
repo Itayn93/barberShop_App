@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/haircut"
+    android:background="@drawable/barbershoppicture"
     android:orientation="vertical"
     tools:context=".activities.AdminMenuActivity">
 
@@ -16,25 +16,16 @@
         android:gravity="center_horizontal"
         android:padding="20dp"
         android:text="Welcome Admin"
-        android:textColor="#FFFFFF"
+        android:textColor="#151414"
         android:textSize="24sp"
-        android:textStyle="bold|italic" />
-
-    <TextView
-        android:id="@+id/textVieWWYLTD"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center_horizontal"
-        android:padding="20dp"
-        android:text="what would you like to do?"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
         android:textStyle="bold|italic" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="238dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="380dp"
+        android:gravity="bottom"
         android:orientation="vertical">
 
         <Button

@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.barbershop_app.R;
-import com.example.barbershop_app.classes.Appointment;
 import com.example.barbershop_app.classes.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText registerEmailText;
     EditText registerPasswordText;
     EditText registerConfirmPassword;
-    // int dbUserID = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_LONG).show();
-                                        //dbUserID++;
+
                                         writeNewUser(id,fullName,id,email,password);
 
                                         Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);// go to Main Menu

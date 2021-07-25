@@ -70,8 +70,8 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     int hour;
     int minute;
     String fullHour;
-    String[] hoursArray;
-    String[] finalHoursArray;
+    //String[] hoursArray;
+    //String[] finalHoursArray;
     Calendar now = Calendar.getInstance();
     DatePickerDialog datePickerDialog;
     ArrayList<Calendar> datesToDisableArray = new ArrayList<>();
@@ -80,6 +80,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     String[] hours = {"08:00", "08:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00",
             "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
             "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"};
+    String date;
 
 
     @Override
@@ -108,13 +109,12 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
         hourPicker = findViewById(R.id.spinnerHourPicker);
 
-        /*hoursArray = UpdatedHoursArray(hours, fullHour);//,datePicker);
+        // hoursArray = UpdatedHoursArray(hours, fullHour);//,datePicker);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hoursArray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hours);// hoursArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hourPicker.setAdapter(adapter);
-        hourPicker.setOnItemSelectedListener(this);*/
-
+        hourPicker.setOnItemSelectedListener(this);
         userObj = getIntent().getStringExtra("userObj");
 
     }
@@ -151,13 +151,13 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
                     }
                 }
 
-                Log.d("Lifecycle: ", " inside onResume hoursArray");
+          /*      Log.d("Lifecycle: ", " inside onResume hoursArray");
                 hoursArray = UpdatedHoursArray(hours, fullHour);
                 //finalHoursArray = DisableAdminHours(hoursArray, startHourArray, endHourArray);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(SchedulerActivity.this, android.R.layout.simple_spinner_item, hoursArray);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 hourPicker.setAdapter(adapter);
-                hourPicker.setOnItemSelectedListener(SchedulerActivity.this);
+                hourPicker.setOnItemSelectedListener(SchedulerActivity.this);*/
             }
 
             @Override
@@ -170,6 +170,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         enterDateDisableButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("calendar");
                 datePickerDialog = DatePickerDialog.newInstance(SchedulerActivity.this, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
                 configureDatePickerDialog(datesToDisableArray, startHourArray, endHourArray);
                 datePickerDialog.setTitle("Choose A Date");
@@ -225,9 +226,7 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
 
                             }
 
-
                         }
-
 
                     }
 
@@ -248,11 +247,75 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
         dbAppointments.child(userId).setValue(appointment);
     }
 
-
+    // Spinner selected hour
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String hourSelected = parent.getItemAtPosition(position).toString();
-        appointment.setHour(hourSelected);
+        /*Date dateHourSelected = null;
+        Date dateCurrentHour = null;
+        Date dateSelected = null;
+        Date currentDate = null;*/
+        /*try {
+            currentDate = new SimpleDateFormat("dd-MM-yyyy").parse(now.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ;
+        try {
+            dateSelected = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            currentDate = new SimpleDateFormat("dd-MM-yyyy").parse(now.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+       if (dateSelected.equals(currentDate)){
+           try {
+               dateHourSelected = new SimpleDateFormat("HH:mm").parse(hourSelected);
+           } catch (ParseException e) {
+               e.printStackTrace();
+           }
+
+           try {
+               dateCurrentHour = new SimpleDateFormat("HH:mm").parse(fullHour);
+           } catch (ParseException e) {
+               e.printStackTrace();
+           }
+
+           if (dateHourSelected.before(dateCurrentHour)) {
+               Toast.makeText(this, "Hour Already Past :( ", Toast.LENGTH_LONG).show();
+           }
+           else appointment.setHour(hourSelected);
+       }
+       else appointment.setHour(hourSelected);*/
+
+       /* if (datePickerDialog.getSelectedDay().getDay() == now.get(Calendar.DAY_OF_MONTH) && datePickerDialog.getSelectedDay().getMonth() == now.get(Calendar.MONTH) &&
+                datePickerDialog.getSelectedDay().getYear() == now.get(Calendar.YEAR)) {
+            //hoursArray = UpdatedHoursArray(hours, hourSelected);
+            appointment.setHour(hourSelected);
+            try {
+                dateHourSelected = new SimpleDateFormat("HH:mm").parse(hourSelected);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                 dateCurrentHour = new SimpleDateFormat("HH:mm").parse(fullHour);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (dateHourSelected.before(dateCurrentHour)) {
+                Toast.makeText(this, "Hour Already Past :( ", Toast.LENGTH_LONG).show();
+            }
+
+
+        }*/
+         appointment.setHour(hourSelected);
     }
 
     @Override
@@ -338,16 +401,16 @@ public class SchedulerActivity extends AppCompatActivity implements AdapterView.
     }*/
 
 
-    // DatePickerDialog
+    // DatePickerDialog set date
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(year);
+        date = String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear + 1) + "/" + String.valueOf(year);
         appointment.setDate(date);
         dateSelected.setText(date);
-        Toast.makeText(this, date, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, date, Toast.LENGTH_LONG).show();
     }
 
-
+    // disable relevant dates
     public void configureDatePickerDialog(ArrayList<Calendar> datesToDisableArray, ArrayList<String> startHourArray, ArrayList<String> endHourArray) {
         Calendar min_date = Calendar.getInstance();
         Calendar max_date = Calendar.getInstance();

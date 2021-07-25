@@ -34,7 +34,7 @@ public class SignInActivity extends AppCompatActivity {
     EditText signInEmailText;
     EditText signInPasswordText;
     User signedInUser = new User();
-    //User user = new User();
+
     String userObj;
     int signInSuccessful = 0;
 

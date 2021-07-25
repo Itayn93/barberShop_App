@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/haircut"
+    android:background="@drawable/barbershoppicture"
     android:orientation="vertical"
     tools:context=".activities.AdminUnavailableActivity">
 
@@ -16,7 +16,7 @@
         android:gravity="center_horizontal"
         android:padding="20dp"
         android:text="Enter Date and time you are unavailable"
-        android:textColor="#FFFFFF"
+        android:textColor="#0E0D0D"
         android:textSize="30sp"
         android:textStyle="italic" />
 
@@ -45,20 +45,20 @@
                 android:id="@+id/spinnerStartHour"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
                 android:layout_margin="20dp"
                 android:layout_weight="0.5"
-                android:background="@color/cardview_light_background" />
+                android:background="@color/purple_500"
+                android:gravity="end" />
 
             <Spinner
                 android:id="@+id/spinnerEndHour"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
                 android:layout_margin="20dp"
                 android:layout_weight="0.5"
-                android:background="@color/cardview_light_background"></Spinner>
-                //android:textAlignment="textStart" />
+                android:background="@color/purple_500"
+                android:textAlignment="viewEnd"></Spinner>
+
 
         </LinearLayout>
 
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:padding="20dp"
-            android:text="Confim Unavailablity" />
+            android:text="Confirm Unavailability" />
 
 
     </LinearLayout>

@@ -2,23 +2,13 @@ package com.example.barbershop_app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.barbershop_app.R;
 import com.example.barbershop_app.classes.Appointment;
 import com.example.barbershop_app.classes.CustomAdapterAdminBookedApps;
-import com.example.barbershop_app.classes.FirebaseHandler;
-import com.example.barbershop_app.classes.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class AdminBookedAppsActivity extends AppCompatActivity {
 
@@ -34,8 +24,7 @@ public class AdminBookedAppsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     CustomAdapterAdminBookedApps customAdapterAdminBookedApps;
     private DatabaseReference dbAppointments;
-    //FirebaseHandler firebaseHandler = new FirebaseHandler();
-    //ArrayList<User> usersList = new ArrayList<>();
+
 
 
     @Override
@@ -43,8 +32,6 @@ public class AdminBookedAppsActivity extends AppCompatActivity {
         Log.d("Lifecycle: ", "AdminBookedAppsActivity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_booked_apps);
-        //usersList = firebaseHandler.getUsersList();
-        //appointmentsList = firebaseHandler.getAppointmentsList();
         dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");// enable read/write to DB
 
     }

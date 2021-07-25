@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.barbershop_app.R;
-import com.google.firebase.auth.FirebaseAuth;
+
 
 public class UserMenuActivity extends AppCompatActivity {
 

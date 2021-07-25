@@ -13,13 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.barbershop_app.R;
 
 import java.util.Calendar;
 
 import com.example.barbershop_app.classes.Appointment;
-import com.example.barbershop_app.classes.FirebaseHandler;
+//import com.example.barbershop_app.classes.FirebaseHandler;
 import com.example.barbershop_app.classes.UnavailableDate;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -123,6 +124,8 @@ public class AdminUnavailableActivity extends AppCompatActivity implements DateP
 
                         dbUnavailableDates.child(String.valueOf(dateID)).setValue(unavailableDate);// Writing the unavailable date to DB
                         dbDateID.setValue(++dateID); // update counter dateID
+                        Toast.makeText(AdminUnavailableActivity.this, "Date Disabled !", Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override

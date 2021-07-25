@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.barbershop_app.R;
 import com.example.barbershop_app.classes.Appointment;
@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UserBookedAppsActivity extends AppCompatActivity {
 
-    //private DatabaseReference dbUsers;
+
     private DatabaseReference dbAppointments;
     TextView fullName;
     TextView date;
@@ -41,7 +41,7 @@ public class UserBookedAppsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_booked_apps);
         Log.d("Lifecycle: ", "UserBookedAppsActivity onCreate ");
-        //dbUsers = FirebaseDatabase.getInstance().getReference().child("users");
+
         dbAppointments = FirebaseDatabase.getInstance().getReference().child("Appointments");
 
     }
@@ -77,7 +77,7 @@ public class UserBookedAppsActivity extends AppCompatActivity {
         dbAppointments.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //int appAvailable = 1;
+
                 Log.d("Lifecycle: ", "UserBookedAppsActivity onDataChange ");
                 for (DataSnapshot dsp : snapshot.getChildren()) { //enhanced loop
                     checkDBAppointment = dsp.getValue(Appointment.class);

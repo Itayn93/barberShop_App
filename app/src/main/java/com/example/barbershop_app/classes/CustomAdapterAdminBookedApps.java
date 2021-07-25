@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.barbershop_app.R;
 
-//import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapterAdminBookedApps extends RecyclerView.Adapter {

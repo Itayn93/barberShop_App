@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/haircut"
+    android:background="@drawable/barbershoppicture"
     android:orientation="vertical"
     tools:context=".activities.SchedulerActivity">
 
@@ -19,7 +19,7 @@
             android:textSize="24sp" />
 
 
-<!--
+        <!--
 
         <DatePicker
             android:id="@+id/datePicker"
@@ -38,35 +38,44 @@
             android:padding="20dp"
             android:text="Enter A Date" />
 
-        <TextView
-            android:id="@+id/info_textDateSelected"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:gravity="center_horizontal"
-            android:padding="20dp"
-            android:text="No Date Selected"
-            android:textColor="#FFFFFF"
-            android:textSize="36sp"
-            android:textStyle="italic" />
+            android:layout_marginTop="100dp"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-        <Spinner
-            android:id="@+id/spinnerHourPicker"
-            android:layout_width="match_parent"
-            android:layout_height="91dp"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:background="@color/cardview_light_background"
-            android:textAlignment="center" />
+                <TextView
+                    android:id="@+id/info_textDateSelected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@color/purple_500"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="No Date Selected"
+                    android:textColor="#1B1A1A"
+                    android:textSize="36sp"
+                    android:textStyle="italic" />
 
+                <Spinner
+                    android:id="@+id/spinnerHourPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="91dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:background="@color/design_default_color_primary"
+                    android:textAlignment="center"
+                    android:textColor="#4C4A4A" />
 
-        <Button
-            android:id="@+id/buttonBookScheduler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:padding="20dp"
-            android:text="Book" />
+                <Button
+                    android:id="@+id/buttonBookScheduler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:padding="20dp"
+                    android:text="Book" />
+        </LinearLayout>
 
 
 </LinearLayout>
